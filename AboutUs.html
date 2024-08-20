@@ -204,7 +204,7 @@
         scene.add(directionalLight);
 
         const loader = new THREE.GLTFLoader();
-        loader.load('./3d/scene.gltf', function (gltf) {
+        loader.load('3d/scene.gltf', function (gltf) {
             const model = gltf.scene;
             scene.add(model);
 
