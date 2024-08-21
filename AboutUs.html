@@ -59,6 +59,7 @@
 
         .team-member {
             display: flex;
+            flex-basis: 70%; /* Устанавливает фиксированное значение вместо автоматического распределения */
             justify-content: space-between;
             align-items: center;
             margin: 40px auto;
@@ -73,8 +74,8 @@
         }
 
         .model-container {
-            width: 300px; 
-            aspect-ratio: 1 / 2; 
+            width: 300px !important; 
+            aspect-ratio: 1 / 2 !important; 
             border-radius: 10px;
             background: transparent;
             overflow: hidden; 
