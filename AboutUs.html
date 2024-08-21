@@ -192,6 +192,8 @@
             const controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableZoom = false;
             controls.enablePan = false;
+            controls.update();
+            controls.enableDamping = true;
 
             const loader = new THREE.GLTFLoader();
             loader.load('3d/scene.gltf', function(gltf) {
@@ -223,23 +225,7 @@
 
             camera.position.set(10, 15, 20); // Позиция камеры для просмотра на уровне груди
             camera.lookAt(new THREE.Vector3(0, 10, 0)); // Направление камеры на центр модели на уровне груди
-                
-            let targetRotation = new THREE.Vector3();
-            let rotationSpeed = 0.05;
-            let dampingFactor = 0.1;
-
-            function updateRotation() {
-                model.rotation.x += (targetRotation.x - model.rotation.x) * dampingFactor;
-                model.rotation.y += (targetRotation.y - model.rotation.y) * dampingFactor;
-                model.rotation.z += (targetRotation.z - model.rotation.z) * dampingFactor;
-            }
-
-            controls.addEventListener('change', () => {
-                targetRotation.x = model.rotation.x;
-                targetRotation.y = model.rotation.y;
-                targetRotation.z = model.rotation.z;
-            });
-
+            
             function animate() {
                 requestAnimationFrame(animate);
                 updateRotation();
