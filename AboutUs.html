@@ -188,11 +188,6 @@
             console.error(`Element with id ${container.id} not found`);
             return;
         }
-
-// Настройка размеров canvas через стили
-        renderer.domElement.style.width = (width / 1.5) + 'px';
-        renderer.domElement.style.height = (height / 2) + 'px';
-        renderer.domElement.style.display = 'block';
         
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(50, element.clientWidth / element.clientHeight, 0.1, 1000);
