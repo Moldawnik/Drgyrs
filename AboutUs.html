@@ -77,6 +77,8 @@
             height: 200px;
             border-radius: 10px;
             background: transparent;
+            overflow: hidden; /* Это гарантирует, что модель не будет выходить за рамки контейнера */
+            position: relative; /* Позволяет контролировать позиционирование модели */
         }
 
         .team-member div {
@@ -186,7 +188,9 @@
             const renderer = new THREE.WebGLRenderer({ alpha: true });
 
             const element = document.getElementById(container.id);
-            renderer.setSize(element.clientWidth, element.clientHeight);
+            const width = element.clientWidth;
+            const height = element.clientHeight;
+            renderer.setSize(width, height);
             element.appendChild(renderer.domElement);
 
             const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -205,7 +209,6 @@
                     texture.minFilter = THREE.NearestFilter;
                     texture.magFilter = THREE.NearestFilter;
                     texture.encoding = THREE.sRGBEncoding;
-                    model.scale.set(10, 10, 10);
                     model.traverse(node => {
                         if (node.isMesh) {
                             node.material.map = texture;
@@ -215,7 +218,7 @@
                 });
 
                 scene.add(model);
-                
+
                 const light = new THREE.AmbientLight(0x404040, 1); // Увеличена яркость
                 scene.add(light);
 
@@ -223,20 +226,20 @@
                 directionalLight.position.set(1, 1, 1).normalize();
                 scene.add(directionalLight);
 
-            camera.position.set(10, 15, 20); // Позиция камеры для просмотра на уровне груди
-            camera.lookAt(new THREE.Vector3(0, 10, 0)); // Направление камеры на центр модели на уровне груди
-            
-            function animate() {
-                requestAnimationFrame(animate);
-                controls.update();
-                renderer.render(scene, camera);
-            }
+                camera.position.set(0, 2, 5); // Позиция камеры для лучшего отображения модели
+                camera.lookAt(new THREE.Vector3(0, 2, 0)); // Направление камеры на центр модели
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    controls.update();
+                    renderer.render(scene, camera);
+                }
                 animate();
 
                 window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
+                    const width = element.clientWidth;
+                    const height = element.clientHeight;
+                    renderer.setSize(width, height);
                     camera.aspect = width / height;
                     camera.updateProjectionMatrix();
                 });
