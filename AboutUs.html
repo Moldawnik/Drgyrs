@@ -73,7 +73,7 @@
         }
 
         .model-container {
-            width: 200px; 
+            width: 150px; 
             aspect-ratio: 1 / 2; 
             border-radius: 10px;
             background: transparent;
@@ -170,97 +170,84 @@
         <div class="model-container" id="model-rimx"></div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/DDSLoader.js"></script>
-    <script>
-            //Dependencies
-            const modelContainers = [
-            { id: 'model-dragoneron', texture: 'textures/dragoneron.png' },
-            { id: 'model-moldawnik', texture: 'textures/moldawnik.png' },
-            { id: 'model-c1sta', texture: 'textures/c1sta.png' },
-            { id: 'model-rimx', texture: 'textures/rimx.png' }
-            ];
-        
-            //Render scale
-            const container = document.getElementById('model-container');
-            const width = window.innerWidth * 1; 
-            const height = width * 1; 
-            const aspectRatio = width / height;
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/DDSLoader.js"></script>
+<script>
+    const modelContainers = [
+        { id: 'model-dragoneron', texture: 'textures/dragoneron.png' },
+        { id: 'model-moldawnik', texture: 'textures/moldawnik.png' },
+        { id: 'model-c1sta', texture: 'textures/c1sta.png' },
+        { id: 'model-rimx', texture: 'textures/rimx.png' }
+    ];
 
-            //Three.js
-            modelContainers.forEach(container => {
-                const scene = new THREE.Scene();
-                const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer({ alpha: true });
-            
-            //Container
-            const element = document.getElementById(container.id);
-            if (!container) {
+    modelContainers.forEach(container => {
+        const element = document.getElementById(container.id);
+        if (!element) {
             console.error(`Element with id ${container.id} not found`);
             return;
-}
-            const width = window.innerWidth * 1; 
-            const height = width * 1; 
-            renderer.setSize(width, height);
-            element.appendChild(renderer.domElement);
-                
-            //Camera
-            const controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableZoom = false;
-            controls.enablePan = false;
-            controls.update();
-            controls.enableDamping = true;
-            camera.position.set(0, 2, 5); // Позиция камеры для лучшего отображения модели
-            camera.lookAt(new THREE.Vector3(0, 2, 0)); // Направление камеры на центр модели
-                
-            //Model
-            const loader = new THREE.GLTFLoader();
-            loader.load('3d/scene.gltf', function(gltf) {
-            const model = gltf.scene;
-            scene.add(model);
-            model.scale.set(1, 1, 1);
-            
-            //Texture
-            const textureLoader = new THREE.TextureLoader();
-            const texture = textureLoader.load(container.texture, (texture) => {
-                    texture.minFilter = THREE.NearestFilter;
-                    texture.magFilter = THREE.NearestFilter;
-                    texture.encoding = THREE.sRGBEncoding;
-                    model.traverse(node => {
-                        if (node.isMesh) {
-                            node.material.map = texture;
-                            node.material.needsUpdate = true;
-                        }
-                    });
-                });
+        }
 
-                
-            //Lights
-            const light = new THREE.AmbientLight(0x404040, 1); 
-            scene.add(light);
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(50, element.clientWidth / element.clientHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(element.clientWidth, element.clientHeight);
+        element.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableZoom = false;
+        controls.enablePan = false;
+        controls.enableDamping = true;
+        controls.update();
+
+        camera.position.set(0, 2, 5);
+        camera.lookAt(new THREE.Vector3(0, 2, 0));
+
+        const loader = new THREE.GLTFLoader();
+        loader.load('3d/scene.gltf', function(gltf) {
+            const model = gltf.scene;
+            model.position.set(0, -1.5, 0);
+            model.scale.set(1, 1, 1);
+            scene.add(model);
+
+            const textureLoader = new THREE.TextureLoader();
+            textureLoader.load(container.texture, (texture) => {
+                texture.minFilter = THREE.NearestFilter;
+                texture.magFilter = THREE.NearestFilter;
+                texture.encoding = THREE.sRGBEncoding;
+                model.traverse(node => {
+                    if (node.isMesh) {
+                        node.material.map = texture;
+                        node.material.needsUpdate = true;
+                    }
+                });
+            });
+
+            const ambientLight = new THREE.AmbientLight(0x404040, 1);
+            scene.add(ambientLight);
+
             const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
             directionalLight.position.set(1, 1, 1).normalize();
             scene.add(directionalLight);
 
-            //OrbitControl
             function animate() {
-            requestAnimationFrame(animate);
-            controls.update();
-            renderer.render(scene, camera);
-                }
-                animate();
-
-                window.addEventListener('resize', () => {
-                    const width = element.clientWidth;
-                    const height = element.clientHeight;
-                    renderer.setSize(width, height);
-                    camera.aspect = width / height;
-                    camera.updateProjectionMatrix();
-                });
-            });
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
         });
-    </script>
+
+        window.addEventListener('resize', () => {
+            const width = element.clientWidth;
+            const height = element.clientHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        });
+    });
+</script>
+
 </body>
 </html>
