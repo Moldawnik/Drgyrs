@@ -74,7 +74,7 @@
 
         .model-container {
             width: 100px;
-            height: 400px;
+            height: 200px;
             border-radius: 10px;
             background: transparent;
         }
@@ -232,23 +232,6 @@
                 renderer.render(scene, camera);
             }
                 animate();
-
-                const scaleInput = document.createElement('input');
-                scaleInput.type = 'range';
-                scaleInput.min = '0.1';
-                scaleInput.max = '5';
-                scaleInput.step = '0.1';
-                scaleInput.value = '1';
-                scaleInput.style.position = 'absolute';
-                scaleInput.style.top = '10px';
-                scaleInput.style.left = '10px';
-                scaleInput.style.zIndex = '10';
-                document.body.appendChild(scaleInput);
-
-                scaleInput.addEventListener('input', () => {
-                    const scaleValue = parseFloat(scaleInput.value);
-                    model.scale.set(scaleValue, scaleValue, scaleValue);
-                });
 
                 window.addEventListener('resize', () => {
                 camera.aspect = window.innerWidth / window.innerHeight;
