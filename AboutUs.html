@@ -206,6 +206,7 @@
                 texture.magFilter = THREE.NearestFilter;
                 texture.encoding = THREE.sRGBEncoding;
                 // Применяем текстуру к модели
+                model.scale.set(10, 10, 10);
                 model.traverse(node => {
                     if (node.isMesh) {
                         node.material.map = texture;
