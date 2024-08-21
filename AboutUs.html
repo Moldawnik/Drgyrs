@@ -274,10 +274,7 @@ document.addEventListener('mousemove', (event) => {
                     model.scale.set(scaleValue, scaleValue, scaleValue);
                 });
 
-                window.addEventListener('resize', () => {
-                    const width = element.clientWidth;
-                    const height = element.clientHeight;
-                    renderer.setSize(width, height);
+               
                     camera.aspect = width / height;
                     camera.updateProjectionMatrix();
                 });
