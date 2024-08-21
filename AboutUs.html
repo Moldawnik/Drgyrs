@@ -188,10 +188,6 @@
             console.error(`Element with id ${container.id} not found`);
             return;
         }
-        const width = window.innerWidth * 1;
-        const height = width * 1;
-        renderer.setSize(width, height);
-        element.appendChild(renderer.domElement);
 
 // Настройка размеров canvas через стили
         renderer.domElement.style.width = (width / 1.5) + 'px';
