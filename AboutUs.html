@@ -192,8 +192,22 @@
         element.appendChild(renderer.domElement);
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableZoom = false; // Отключаем зум
+        controls.enableZoom = false;
+        controls.enablePan = false; 
 
+        let targetRotation = new THREE.Vector3();
+        let rotationSpeed = 0.05;
+        let dampingFactor = 0.1; // 
+
+        function updateRotation() {
+                    model.rotation.x += (targetRotation.x - model.rotation.x) * dampingFactor;
+                    model.rotation.y += (targetRotation.y - model.rotation.y) * dampingFactor;
+                    model.rotation.z += (targetRotation.z - model.rotation.z) * dampingFactor;
+            controls.addEventListener('change', () => {
+                    targetRotation.x = model.rotation.x;
+                    targetRotation.y = model.rotation.y;
+                    targetRotation.z = model.rotation.z;
+        
         const loader = new THREE.GLTFLoader();
         loader.load('3d/scene.gltf', function(gltf) {
             const model = gltf.scene;
@@ -205,7 +219,7 @@
                 texture.minFilter = THREE.NearestFilter;
                 texture.magFilter = THREE.NearestFilter;
                 texture.encoding = THREE.sRGBEncoding;
-                // Применяем текстуру к модели
+                // текстуру к модели
                 model.scale.set(10, 10, 10);
                 model.traverse(node => {
                     if (node.isMesh) {
@@ -218,7 +232,7 @@
             scene.add(model);
         });
         
-        // Добавляем источники света
+        // источники света
         const light = new THREE.AmbientLight(0x404040); // Мягкий свет
         scene.add(light);
 
@@ -245,6 +259,22 @@
             renderer.setSize(width, height);
             camera.aspect = width / height;
             camera.updateProjectionMatrix();
+
+            const scaleInput = document.createElement('input');
+            scaleInput.type = 'range';
+            scaleInput.min = '0.1';
+            scaleInput.max = '5';
+            scaleInput.step = '0.1';
+            scaleInput.value = '1';
+            scaleInput.style.position = 'absolute';
+            scaleInput.style.top = '10px';
+            scaleInput.style.left = '10px';
+            scaleInput.style.zIndex = '10';
+            document.body.appendChild(scaleInput);
+
+            scaleInput.addEventListener('input', () => {
+                const scaleValue = parseFloat(scaleInput.value);
+                model.scale.set(scaleValue, scaleValue, scaleValue);
         });
     });
 </script>
