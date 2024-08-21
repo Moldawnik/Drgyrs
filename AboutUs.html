@@ -73,7 +73,7 @@
         }
 
         .model-container {
-            width: 300px; 
+            width: 200px; 
             aspect-ratio: 1 / 2; 
             border-radius: 10px;
             background: transparent;
@@ -197,8 +197,12 @@
             
             //Container
             const element = document.getElementById(container.id);
-            const width = element.clientWidth;
-            const height = element.clientHeight;
+            if (!container) {
+            console.error(`Element with id ${container.id} not found`);
+            return;
+}
+            const width = container.clientWidth;
+            const height = container.clientHeight;
             renderer.setSize(width, height);
             element.appendChild(renderer.domElement);
                 
