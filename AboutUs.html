@@ -72,7 +72,6 @@
             flex-direction: row-reverse;
         }
 
-        /* Контейнеры для моделей */
         .model-container {
             width: 400px;
             height: 400px;
@@ -119,7 +118,6 @@
         .team-member:nth-child(even) .model-container {
             order: 1;
         }
-
     </style>
 </head>
 <body>
@@ -170,116 +168,104 @@
         <div class="model-container" id="model-rimx"></div>
     </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/DDSLoader.js"></script>
-<script>
-    const modelContainers = [
-        { id: 'model-dragoneron', texture: 'textures/dragoneron.png' },
-        { id: 'model-moldawnik', texture: 'textures/moldawnik.png' },
-        { id: 'model-c1sta', texture: 'textures/c1sta.png' },
-        { id: 'model-rimx', texture: 'textures/rimx.png' }
-    ];
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/DDSLoader.js"></script>
+    <script>
+        const modelContainers = [
+            { id: 'model-dragoneron', texture: 'textures/dragoneron.png' },
+            { id: 'model-moldawnik', texture: 'textures/moldawnik.png' },
+            { id: 'model-c1sta', texture: 'textures/c1sta.png' },
+            { id: 'model-rimx', texture: 'textures/rimx.png' }
+        ];
 
-    modelContainers.forEach(container => {
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true }); // Прозрачный фон
+        modelContainers.forEach(container => {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
 
-        const element = document.getElementById(container.id);
-        renderer.setSize(element.clientWidth, element.clientHeight);
-        element.appendChild(renderer.domElement);
+            const element = document.getElementById(container.id);
+            renderer.setSize(element.clientWidth, element.clientHeight);
+            element.appendChild(renderer.domElement);
 
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableZoom = false;
-        controls.enablePan = false; 
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableZoom = false;
+            controls.enablePan = false;
 
-        let targetRotation = new THREE.Vector3();
-        let rotationSpeed = 0.05;
-        let dampingFactor = 0.1; // 
+            const loader = new THREE.GLTFLoader();
+            loader.load('3d/scene.gltf', function(gltf) {
+                const model = gltf.scene;
 
-        function updateRotation() {
+                // Загрузка текстуры для каждой модели
+                const textureLoader = new THREE.TextureLoader();
+                const texture = textureLoader.load(container.texture, (texture) => {
+                    texture.minFilter = THREE.NearestFilter;
+                    texture.magFilter = THREE.NearestFilter;
+                    texture.encoding = THREE.sRGBEncoding;
+                    model.scale.set(10, 10, 10);
+                    model.traverse(node => {
+                        if (node.isMesh) {
+                            node.material.map = texture;
+                            node.material.needsUpdate = true;
+                        }
+                    });
+                });
+
+                scene.add(model);
+                camera.position.set(10, 10, 10); 
+                camera.lookAt(new THREE.Vector3(0, 0, 0)); 
+
+                let targetRotation = new THREE.Vector3();
+                let rotationSpeed = 0.05;
+                let dampingFactor = 0.1;
+
+                function updateRotation() {
                     model.rotation.x += (targetRotation.x - model.rotation.x) * dampingFactor;
                     model.rotation.y += (targetRotation.y - model.rotation.y) * dampingFactor;
                     model.rotation.z += (targetRotation.z - model.rotation.z) * dampingFactor;
-            controls.addEventListener('change', () => {
+                }
+
+                controls.addEventListener('change', () => {
                     targetRotation.x = model.rotation.x;
                     targetRotation.y = model.rotation.y;
                     targetRotation.z = model.rotation.z;
-        
-        const loader = new THREE.GLTFLoader();
-        loader.load('3d/scene.gltf', function(gltf) {
-            const model = gltf.scene;
+                });
 
-            // Загрузка текстуры для каждой модели
-            const textureLoader = new THREE.TextureLoader();
-            const texture = textureLoader.load(container.texture, (texture) => {
-                // Настройки фильтрации текстуры для улучшения качества
-                texture.minFilter = THREE.NearestFilter;
-                texture.magFilter = THREE.NearestFilter;
-                texture.encoding = THREE.sRGBEncoding;
-                // текстуру к модели и масштаб
-                model.scale.set(10, 10, 10);
-                model.traverse(node => {
-                    if (node.isMesh) {
-                        node.material.map = texture;
-                        node.material.needsUpdate = true;
-                    }
+                function animate() {
+                    requestAnimationFrame(animate);
+                    updateRotation();
+                    controls.update();
+                    renderer.render(scene, camera);
+                }
+                animate();
+
+                const scaleInput = document.createElement('input');
+                scaleInput.type = 'range';
+                scaleInput.min = '0.1';
+                scaleInput.max = '5';
+                scaleInput.step = '0.1';
+                scaleInput.value = '1';
+                scaleInput.style.position = 'absolute';
+                scaleInput.style.top = '10px';
+                scaleInput.style.left = '10px';
+                scaleInput.style.zIndex = '10';
+                document.body.appendChild(scaleInput);
+
+                scaleInput.addEventListener('input', () => {
+                    const scaleValue = parseFloat(scaleInput.value);
+                    model.scale.set(scaleValue, scaleValue, scaleValue);
+                });
+
+                window.addEventListener('resize', () => {
+                    const width = element.clientWidth;
+                    const height = element.clientHeight;
+                    renderer.setSize(width, height);
+                    camera.aspect = width / height;
+                    camera.updateProjectionMatrix();
                 });
             });
-
-            scene.add(model);
         });
-        
-        // источники света
-        const light = new THREE.AmbientLight(0x404040); // Мягкий свет
-        scene.add(light);
-
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(0, 1, 0);
-        scene.add(directionalLight);
-
-        // Настройка камеры
-        camera.position.set(10, 10, 10); // Позиция камеры сбоку и сверху
-        camera.lookAt(new THREE.Vector3(0, 0, 0)); // Направление камеры на центр модели
-
-        function animate() {
-            requestAnimationFrame(animate);
-            updateRotation();
-            controls.update();
-            renderer.render(scene, camera);
-        }
-        animate();
-                
-       // Добавление управления масштабированием
-            const scaleInput = document.createElement('input');
-            scaleInput.type = 'range';
-            scaleInput.min = '0.1';
-            scaleInput.max = '5';
-            scaleInput.step = '0.1';
-            scaleInput.value = '1';
-            scaleInput.style.position = 'absolute';
-            scaleInput.style.top = '10px';
-            scaleInput.style.left = '10px';
-            scaleInput.style.zIndex = '10';
-            document.body.appendChild(scaleInput);
-
-            scaleInput.addEventListener('input', () => {
-                const scaleValue = parseFloat(scaleInput.value);
-                model.scale.set(scaleValue, scaleValue, scaleValue);
-        });
-
-        // Обновляем размеры рендерера при изменении размера окна
-        window.addEventListener('resize', () => {
-            const width = element.clientWidth;
-            const height = element.clientHeight;
-            renderer.setSize(width, height);
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-
-        });
-    });
-</script>
+    </script>
 </body>
 </html>
