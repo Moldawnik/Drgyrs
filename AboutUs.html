@@ -201,13 +201,13 @@
         controls.enableDamping = true;
         controls.update();
 
-        camera.position.set(0, 2, 5);
+        camera.position.set(5, 5, 5);
         camera.lookAt(new THREE.Vector3(0, 2, 0));
 
         const loader = new THREE.GLTFLoader();
         loader.load('3d/scene.gltf', function(gltf) {
             const model = gltf.scene;
-            model.position.set(0, -1.2, 0);
+            model.position.set(0, -1.5, 0);
             model.scale.set(1.5, 1.5, 1.5);
             scene.add(model);
 
