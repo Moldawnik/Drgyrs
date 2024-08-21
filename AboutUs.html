@@ -193,6 +193,8 @@
         const camera = new THREE.PerspectiveCamera(50, element.clientWidth / element.clientHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(element.clientWidth, element.clientHeight);
+        element.style.width = '100%';
+        element.style.height = '100%';
         element.appendChild(renderer.domElement);
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
