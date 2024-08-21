@@ -222,8 +222,9 @@
                 scene.add(directionalLight);
                 
                 camera.position.set(10, 20, 15); 
-                camera.lookAt(new THREE.Vector3(0, 20, 5)); 
+                camera.lookAt(new THREE.Vector3(5, 20, 5)); 
 
+                let targetRotation = new THREE.Vector3();
                 let rotationSpeed = 0.05;
                 let dampingFactor = 0.1;
 
