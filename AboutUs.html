@@ -201,8 +201,8 @@
             console.error(`Element with id ${container.id} not found`);
             return;
 }
-            const width = container.clientWidth;
-            const height = container.clientHeight;
+            const width = window.innerWidth * 1; 
+            const height = width * 1; 
             renderer.setSize(width, height);
             element.appendChild(renderer.domElement);
                 
