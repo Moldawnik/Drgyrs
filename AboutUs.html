@@ -14,7 +14,13 @@
         }
         
         canvas { display: block; }
-
+        #canvas-container {
+            width: 100%;
+            height: 600px;
+            position: relative;
+            margin: 0 auto;
+            background-color: #1e1e1e;
+            
         nav {
             background: linear-gradient(45deg, #cc0000, #d94008);
             padding: 10px;
@@ -182,15 +188,19 @@
         </div>
     </div>
 
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+       <div id="canvas-container"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
     <script>
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
+        
+        // Привязываем канвас к контейнеру
+        const container = document.getElementById('canvas-container');
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
@@ -199,7 +209,18 @@
             scene.add(gltf.scene);
         });
 
+        // Добавляем источники света
+        const light = new THREE.AmbientLight(0x404040); // Мягкий свет
+        scene.add(light);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(0, 1, 0);
+        scene.add(directionalLight);
+
+        // Настройка камеры
         camera.position.z = 5;
+        camera.position.y = 2; // Положение камеры по Y (высота)
+        camera.lookAt(new THREE.Vector3(0, 1, 0)); // Направляем камеру на модель
 
         function animate() {
             requestAnimationFrame(animate);
@@ -207,6 +228,15 @@
             renderer.render(scene, camera);
         }
         animate();
+
+        // Обновляем размеры рендерера при изменении размера окна
+        window.addEventListener('resize', () => {
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        });
     </script>
 </body>
 </html>
