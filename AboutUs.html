@@ -248,7 +248,22 @@
             camera.aspect = width / height;
             camera.updateProjectionMatrix();
         });
+        
+        window.addEventListener('load', () => {
+        modelContainers.forEach(container => {
+            const element = document.getElementById(container.id);
+            const width = element.clientWidth;
+            const height = element.clientHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        });
+            
+        window.addEventListener('resize', () => {
+        model.position.set(0, -container.clientHeight / 2, 0);
+        });
     });
+});
 </script>
 
 </body>
