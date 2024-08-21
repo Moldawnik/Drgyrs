@@ -73,12 +73,12 @@
         }
 
         .model-container {
-            max-width: 100px;
-            height: 100%;
+            width: 300px; 
+            aspect-ratio: 1 / 2; 
             border-radius: 10px;
             background: transparent;
-            overflow: hidden; /* Это гарантирует, что модель не будет выходить за рамки контейнера */
-            position: relative; /* Позволяет контролировать позиционирование модели */
+            overflow: hidden; 
+            position: relative; 
         }
 
         .team-member div {
@@ -175,37 +175,52 @@
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/DDSLoader.js"></script>
     <script>
-        const modelContainers = [
+            //Dependencies
+            const modelContainers = [
             { id: 'model-dragoneron', texture: 'textures/dragoneron.png' },
             { id: 'model-moldawnik', texture: 'textures/moldawnik.png' },
             { id: 'model-c1sta', texture: 'textures/c1sta.png' },
             { id: 'model-rimx', texture: 'textures/rimx.png' }
-        ];
+            ];
+        
+            //Render scale
+            const container = document.getElementById('model-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            const aspectRatio = width / height;
 
-        modelContainers.forEach(container => {
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true });
-
+            //Three.js
+            modelContainers.forEach(container => {
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ alpha: true });
+            
+            //Container
             const element = document.getElementById(container.id);
             const width = element.clientWidth;
             const height = element.clientHeight;
             renderer.setSize(width, height);
             element.appendChild(renderer.domElement);
-
+                
+            //Camera
             const controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableZoom = false;
             controls.enablePan = false;
             controls.update();
             controls.enableDamping = true;
-
+            camera.position.set(0, 2, 5); // Позиция камеры для лучшего отображения модели
+            camera.lookAt(new THREE.Vector3(0, 2, 0)); // Направление камеры на центр модели
+                
+            //Model
             const loader = new THREE.GLTFLoader();
             loader.load('3d/scene.gltf', function(gltf) {
-                const model = gltf.scene;
-
-                // Загрузка текстуры для каждой модели
-                const textureLoader = new THREE.TextureLoader();
-                const texture = textureLoader.load(container.texture, (texture) => {
+            const model = gltf.scene;
+            scene.add(model);
+            model.scale.set(3, 3, 3);
+            
+            //Texture
+            const textureLoader = new THREE.TextureLoader();
+            const texture = textureLoader.load(container.texture, (texture) => {
                     texture.minFilter = THREE.NearestFilter;
                     texture.magFilter = THREE.NearestFilter;
                     texture.encoding = THREE.sRGBEncoding;
@@ -217,22 +232,19 @@
                     });
                 });
 
-                scene.add(model);
+                
+            //Lights
+            const light = new THREE.AmbientLight(0x404040, 1); 
+            scene.add(light);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(1, 1, 1).normalize();
+            scene.add(directionalLight);
 
-                const light = new THREE.AmbientLight(0x404040, 1); // Увеличена яркость
-                scene.add(light);
-
-                const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Увеличена яркость
-                directionalLight.position.set(1, 1, 1).normalize();
-                scene.add(directionalLight);
-
-                camera.position.set(0, 2, 5); // Позиция камеры для лучшего отображения модели
-                camera.lookAt(new THREE.Vector3(0, 2, 0)); // Направление камеры на центр модели
-
-                function animate() {
-                    requestAnimationFrame(animate);
-                    controls.update();
-                    renderer.render(scene, camera);
+            //OrbitControl
+            function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
                 }
                 animate();
 
