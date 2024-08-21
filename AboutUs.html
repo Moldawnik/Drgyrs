@@ -220,7 +220,7 @@
                 const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Увеличена яркость
                 directionalLight.position.set(1, 1, 1).normalize();
                 scene.add(directionalLight);
-camera.position.set(5, 20, 7);
+camera.position.set(10, 20, 15);
 let isDragging = false;
 let targetRotation = 0;
 let currentRotation = 0;
@@ -253,7 +253,12 @@ document.addEventListener('mousemove', (event) => {
         targetRotation += event.movementX * rotationSpeed;
     }
 });
-
+ function animate() {
+                requestAnimationFrame(animate);
+                updateRotation();
+                controls.update();
+                renderer.render(scene, camera);
+            }
                 animate();
 
                 const scaleInput = document.createElement('input');
