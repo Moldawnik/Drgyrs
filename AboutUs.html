@@ -220,7 +220,7 @@
                 const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Увеличена яркость
                 directionalLight.position.set(1, 1, 1).normalize();
                 scene.add(directionalLight);
-
+camera.position.set(5, 50, 7);
 let isDragging = false;
 let targetRotation = 0;
 let currentRotation = 0;
@@ -240,7 +240,6 @@ function animate() {
     currentRotation += rotationVelocity;
     camera.position.x = Math.sin(currentRotation) * 5; // Установка позиции камеры
     camera.position.z = Math.cos(currentRotation) * 7;
-    camera.position.y = Math.cos(currentRotation) * 10;
     camera.lookAt(new THREE.Vector3(0, 1, 0)); // Направление камеры
 
     renderer.render(scene, camera);
@@ -274,7 +273,10 @@ document.addEventListener('mousemove', (event) => {
                     model.scale.set(scaleValue, scaleValue, scaleValue);
                 });
 
-               
+                window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
                     camera.aspect = width / height;
                     camera.updateProjectionMatrix();
                 });
