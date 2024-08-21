@@ -12,15 +12,7 @@
             background-color: #1e1e1e;
             color: #d0d0d0;
         }
-        
-        canvas { display: block; }
-        #canvas-container {
-            width: 100%;
-            height: 600px;
-            position: relative;
-            margin: 0 auto;
-            background-color: #1e1e1e;}
-            
+
         nav {
             background: linear-gradient(45deg, #cc0000, #d94008);
             padding: 10px;
@@ -39,12 +31,6 @@
 
         nav a:hover {
             background-color: #b30000;
-        }
-
-        #model-viewer {
-            width: 200px;
-            height: 400px;
-            border-radius: 10px;
         }
 
         .header {
@@ -86,16 +72,12 @@
             flex-direction: row-reverse;
         }
 
-        .team-member img {
-            max-width: 400px;
+        /* Контейнеры для моделей */
+        .model-container {
+            width: 400px;
+            height: 400px;
             border-radius: 10px;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .team-member img:hover {
-            transform: scale(1.15);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6);
+            background: transparent;
         }
 
         .team-member div {
@@ -130,11 +112,11 @@
             text-align: right;
         }
 
-        .team-member:nth-child(odd) img {
+        .team-member:nth-child(odd) .model-container {
             order: 2;
         }
 
-        .team-member:nth-child(even) img {
+        .team-member:nth-child(even) .model-container {
             order: 1;
         }
 
@@ -157,85 +139,105 @@
     </div>
 
     <div class="team-member">
-        <img src="dragoneron.png" alt="Dragoneron"> 
+        <div class="model-container" id="model-dragoneron"></div>
         <div>
             <h2 style="color: #b60000;">Dragoneron</h2>
-            <p>Dragoneron — Лидер сервера и основатель команды Dragyrs. Именно он сумел собрать вокруг себя множество друзей, создавая атмосферу, где каждый чувствует себя частью чего-то большого. С детства Dragoneron проявлял склонности к творчеству, организовывая мероприятия и предлагая оригинальные идеи. Он привлекал к себе людей, которые с радостью принимали участие в его проектах, будь то совместные игры или масштабные коллаборации. Команда вокруг него не только дополняла его идеи, но и росла вместе с ним, под его руководством. Многие не представляли себе участие в проектах без его руководства и не раз присоединялись к нему для участия в разнообразных режимах и играх. Конечно, на пути не обошлось без конфликтов, когда сталкивались разные идеи и подходы, но Dragoneron всегда умело сохранял дистанцию и не позволял этим конфликтам влиять на его креативность. Сейчас он активно ведет свой канал, где выпускает анимационные ролики, посвящая им много времени и усилий. Именно с этого все началось, и это остается его главным источником вдохновения.</p>
+            <p>Dragoneron — Лидер сервера и основатель команды Dragyrs...</p>
         </div>
     </div>
 
     <div class="team-member">
         <div>
             <h2 style="color: #1E3D59;">Moldawnik</h2>
-            <p>Известный большинству как Денис, Moldawnik присоединился к коллективу 2 сентября 2019 года и с тех пор его всегда называли именно так. С ним связано множество историй и проектов, благодаря его таланту в креативной сфере и сильным организационным навыкам. Moldawnik активно участвовал в создании и развитии различных проектов Dragoneron, часто выступая в роли сценариста и советника. Он также был одним из трёх ключевых создателей сервера ПВП Лига, и его вовлеченность в дела команды остается неизменной. Несмотря на его трудности с техническими навыками, его способности в креативной сфере обеспечивают ему крепкое место в команде. Каждый из нас знает его как бесстрашного креативщика, который не боится принимать вызовы и способен изменить ход событий.</p>
+            <p>Известный большинству как Денис, Moldawnik присоединился к коллективу 2 сентября 2019 года...</p>
         </div>
-        <img src="moldawnik.png" alt="Moldawnik">
+        <div class="model-container" id="model-moldawnik"></div>
     </div>
 
     <div class="team-member">
-        <img src="c1sta.png" alt="C1sta">
+        <div class="model-container" id="model-c1sta"></div>
         <div>
             <h2 style="color: #8B4513;">C1sta</h2>
-            <p>Медведь — один из первых участников в нашем коллективе. Он создавал костяк команды и имел тесные связи с Dragoneron на первых порах формирования коллектива в 2019 году. После 2020 года активно взаимодействовал в группе с Moldawnik и Its Me. В периоды 2021 и 2022 годов помогал и даже организовывал некоторые долгосрочные авантюры, такие как игра на AgeMine или строительство SF (Симулятор Фермы). С 2023 года стал реже общаться с коллективом и в основном участвует только в играх. Сейчас он хочет уйти на покой и больше не ввязываться в новые проекты.</p>
+            <p>Медведь — один из первых участников в нашем коллективе...</p>
         </div>
     </div>
 
     <div class="team-member">
-        <img src="rimx.png" alt="Rimx">
         <div>
             <h2 style="color: #f6a05b;">Rimx</h2>
-            <p>Rimx присоединился к коллективу еще до 2019 года. Хотя этот период мало задокументирован, известно, что он активно участвовал в таких мероприятиях, как мини-страны и захват флага. Несмотря на то, что Rimx больше увлекается играми и предпочитает оставаться простым участником, его харизма выделяет его среди других. Он всегда готов составить компанию на вечер и обладает уникальной историей, которая делает его важной частью нашего коллектива.</p>
+            <p>Rimx присоединился к коллективу еще до 2019 года...</p>
         </div>
+        <div class="model-container" id="model-rimx"></div>
     </div>
 
-       <div id="canvas-container"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
     <script>
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        
-        // Привязываем канвас к контейнеру
-        const container = document.getElementById('canvas-container');
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        container.appendChild(renderer.domElement);
+        const modelContainers = [
+            { id: 'model-dragoneron', texture: 'textures/dragoneron.png' },
+            { id: 'model-moldawnik', texture: 'textures/moldawnik.png' },
+            { id: 'model-c1sta', texture: 'textures/c1sta.png' },
+            { id: 'model-rimx', texture: 'textures/rimx.png' }
+        ];
 
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        modelContainers.forEach(container => {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true }); // Прозрачный фон
 
-        const loader = new THREE.GLTFLoader();
-        loader.load('3d/scene.gltf', function(gltf) {
-            scene.add(gltf.scene);
-        });
+            const element = document.getElementById(container.id);
+            renderer.setSize(element.clientWidth, element.clientHeight);
+            element.appendChild(renderer.domElement);
 
-        // Добавляем источники света
-        const light = new THREE.AmbientLight(0x404040); // Мягкий свет
-        scene.add(light);
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableZoom = false; // Отключаем зум
 
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(0, 1, 0);
-        scene.add(directionalLight);
+            const loader = new THREE.GLTFLoader();
+            loader.load('3d/steve.gltf', function(gltf) {
+                const model = gltf.scene;
 
-        // Настройка камеры
-        camera.position.z = 5;
-        camera.position.y = 2; // Положение камеры по Y (высота)
-        camera.lookAt(new THREE.Vector3(0, 1, 0)); // Направляем камеру на модель
+                // Загрузка текстуры для каждой модели
+                const textureLoader = new THREE.TextureLoader();
+                const texture = textureLoader.load(container.texture);
+                model.traverse(node => {
+                    if (node.isMesh) {
+                        node.material.map = texture;
+                        node.material.needsUpdate = true;
+                    }
+                });
 
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update();
-            renderer.render(scene, camera);
-        }
-        animate();
+                scene.add(model);
+            });
 
-        // Обновляем размеры рендерера при изменении размера окна
-        window.addEventListener('resize', () => {
-            const width = container.clientWidth;
-            const height = container.clientHeight;
-            renderer.setSize(width, height);
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
+            // Добавляем источники света
+            const light = new THREE.AmbientLight(0x404040); // Мягкий свет
+            scene.add(light);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            directionalLight.position.set(0, 1, 0);
+            scene.add(directionalLight);
+
+            // Настройка камеры
+            camera.position.z = 3;
+            camera.position.y = 1; // Положение камеры по Y (высота)
+            camera.lookAt(new THREE.Vector3(0, 1, 0)); // Направляем камеру на модель
+
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // Обновляем размеры рендерера при изменении размера окна
+            window.addEventListener('resize', () => {
+                const width = element.clientWidth;
+                const height = element.clientHeight;
+                renderer.setSize(width, height);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            });
         });
     </script>
 </body>
