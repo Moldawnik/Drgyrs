@@ -220,40 +220,27 @@
                 const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Увеличена яркость
                 directionalLight.position.set(1, 1, 1).normalize();
                 scene.add(directionalLight);
-camera.position.set(10, 20, 15);
-let isDragging = false;
-let targetRotation = 0;
-let currentRotation = 0;
-let rotationVelocity = 0;
-const rotationDamping = 0.95; // Коэффициент замедления вращения
 
-function animate() {
-    requestAnimationFrame(animate);
-    
-    // Обновление вращения камеры
-    if (isDragging) {
-        rotationVelocity = (targetRotation - currentRotation) * 0.1; // Пропорциональное ускорение
-    } else {
-        rotationVelocity *= rotationDamping; // Замедление вращения
-    }
-    
-    currentRotation += rotationVelocity;
-    camera.position.x = Math.sin(currentRotation) * 5; // Установка позиции камеры
-    camera.position.z = Math.cos(currentRotation) * 7;
-    camera.lookAt(new THREE.Vector3(0, 10, 0)); // Направление камеры
+            camera.position.set(10, 15, 20); // Позиция камеры для просмотра на уровне груди
+            camera.lookAt(new THREE.Vector3(0, 10, 0)); // Направление камеры на центр модели на уровне груди
+                
+            let targetRotation = new THREE.Vector3();
+            let rotationSpeed = 0.05;
+            let dampingFactor = 0.1;
 
-    renderer.render(scene, camera);
-}
+            function updateRotation() {
+                model.rotation.x += (targetRotation.x - model.rotation.x) * dampingFactor;
+                model.rotation.y += (targetRotation.y - model.rotation.y) * dampingFactor;
+                model.rotation.z += (targetRotation.z - model.rotation.z) * dampingFactor;
+            }
 
-document.addEventListener('mousedown', () => isDragging = true);
-document.addEventListener('mouseup', () => isDragging = false);
-document.addEventListener('mousemove', (event) => {
-    if (isDragging) {
-        const rotationSpeed = 0.002;
-        targetRotation += event.movementX * rotationSpeed;
-    }
-});
- function animate() {
+            controls.addEventListener('change', () => {
+                targetRotation.x = model.rotation.x;
+                targetRotation.y = model.rotation.y;
+                targetRotation.z = model.rotation.z;
+            });
+
+            function animate() {
                 requestAnimationFrame(animate);
                 updateRotation();
                 controls.update();
