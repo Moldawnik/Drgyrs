@@ -170,76 +170,83 @@
         <div class="model-container" id="model-rimx"></div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/DDSLoader.js"></script>
-    <script>
-        const modelContainers = [
-            { id: 'model-dragoneron', texture: 'textures/dragoneron.png' },
-            { id: 'model-moldawnik', texture: 'textures/moldawnik.png' },
-            { id: 'model-c1sta', texture: 'textures/c1sta.png' },
-            { id: 'model-rimx', texture: 'textures/rimx.png' }
-        ];
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/DDSLoader.js"></script>
+<script>
+    const modelContainers = [
+        { id: 'model-dragoneron', texture: 'textures/dragoneron.png' },
+        { id: 'model-moldawnik', texture: 'textures/moldawnik.png' },
+        { id: 'model-c1sta', texture: 'textures/c1sta.png' },
+        { id: 'model-rimx', texture: 'textures/rimx.png' }
+    ];
 
-        modelContainers.forEach(container => {
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true }); // Прозрачный фон
+    modelContainers.forEach(container => {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true }); // Прозрачный фон
 
-            const element = document.getElementById(container.id);
-            renderer.setSize(element.clientWidth, element.clientHeight);
-            element.appendChild(renderer.domElement);
+        const element = document.getElementById(container.id);
+        renderer.setSize(element.clientWidth, element.clientHeight);
+        element.appendChild(renderer.domElement);
 
-            const controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableZoom = false; // Отключаем зум
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableZoom = false; // Отключаем зум
 
-            const loader = new THREE.GLTFLoader();
-            loader.load('3d/scene.gltf', function(gltf) {
-                const model = gltf.scene;
+        const loader = new THREE.GLTFLoader();
+        loader.load('3d/scene.gltf', function(gltf) {
+            const model = gltf.scene;
 
-                // Загрузка текстуры для каждой модели
-                const textureLoader = new THREE.TextureLoader();
-                const texture = textureLoader.load(container.texture);
+            // Загрузка текстуры для каждой модели
+            const textureLoader = new THREE.TextureLoader();
+            const texture = textureLoader.load(container.texture, (texture) => {
+                // Настройки фильтрации текстуры для улучшения качества
+                texture.minFilter = THREE.NearestFilter;
+                texture.magFilter = THREE.NearestFilter;
+                texture.encoding = THREE.sRGBEncoding;
+                // Применяем текстуру к модели
                 model.traverse(node => {
                     if (node.isMesh) {
                         node.material.map = texture;
                         node.material.needsUpdate = true;
                     }
                 });
-
-                scene.add(model);
             });
 
-            // Добавляем источники света
-            const light = new THREE.AmbientLight(0x404040); // Мягкий свет
-            scene.add(light);
-
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-            directionalLight.position.set(0, 1, 0);
-            scene.add(directionalLight);
-
-            // Настройка камеры
-            camera.position.z = 7;
-            camera.position.y = 30; // Положение камеры по Y (высота)
-            camera.lookAt(new THREE.Vector3(0, 1, 0)); // Направляем камеру на модель
-
-            function animate() {
-                requestAnimationFrame(animate);
-                controls.update();
-                renderer.render(scene, camera);
-            }
-            animate();
-
-            // Обновляем размеры рендерера при изменении размера окна
-            window.addEventListener('resize', () => {
-                const width = element.clientWidth;
-                const height = element.clientHeight;
-                renderer.setSize(width, height);
-                camera.aspect = width / height;
-                camera.updateProjectionMatrix();
-            });
+            scene.add(model);
         });
-    </script>
+        
+        // Добавляем источники света
+        const light = new THREE.AmbientLight(0x404040); // Мягкий свет
+        scene.add(light);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(0, 1, 0);
+        scene.add(directionalLight);
+
+        // Настройка камеры
+        camera.position.z = 7;
+        camera.position.y = 30; // Положение камеры по Y (высота)
+        camera.lookAt(new THREE.Vector3(0, 1, 0)); // Направляем камеру на модель
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Обновляем размеры рендерера при изменении размера окна
+        window.addEventListener('resize', () => {
+            const width = element.clientWidth;
+            const height = element.clientHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        });
+    });
+</script>
+
 </body>
 </html>
