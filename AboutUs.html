@@ -213,6 +213,14 @@
                 });
 
                 scene.add(model);
+                
+                const light = new THREE.AmbientLight(0x404040, 1); // Увеличена яркость
+                scene.add(light);
+
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Увеличена яркость
+                directionalLight.position.set(1, 1, 1).normalize();
+                scene.add(directionalLight);
+                
                 camera.position.set(10, 10, 10); 
                 camera.lookAt(new THREE.Vector3(0, 0, 0)); 
 
