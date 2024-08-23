@@ -249,8 +249,8 @@
             //Lights
             const ambientLight = new THREE.AmbientLight(0x404040, 1);
             scene.add(ambientLight);
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-            directionalLight.position.set(1, 1, 1).normalize();
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+            directionalLight.position.set(0, 1, 1).normalize();
             scene.add(directionalLight);
 
             function animate() {
