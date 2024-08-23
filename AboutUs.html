@@ -250,7 +250,7 @@
             const ambientLight = new THREE.AmbientLight(0x404040, 2);
             scene.add(ambientLight);
             const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-            directionalLight.position.set(0, 0, 0).normalize();
+            directionalLight.position.set(1, 1, 1).normalize();
             camera.add(directionalLight);
 
             function animate() {
