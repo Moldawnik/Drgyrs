@@ -251,6 +251,8 @@
             scene.add(ambientLight);
             const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
             directionalLight.position.set(1, 1, 1).normalize();
+            directionalLight.target.position.set(0, 0, 0);  // Убедитесь, что он направлен на центр сцены
+            scene.add(directionalLight.target);  // Добавляем цель света в сцену
             camera.add(directionalLight);
 
             function animate() {
