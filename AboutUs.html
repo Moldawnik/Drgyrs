@@ -251,7 +251,7 @@
             scene.add(ambientLight);
             const pointLight = new THREE.PointLight(0xffffff, 10);
             pointLight.position.set(0, 0, 0).normalize();
-            camera.add(directionalLight);
+            camera.add(pointLight);
 
             function animate() {
                 requestAnimationFrame(animate);
