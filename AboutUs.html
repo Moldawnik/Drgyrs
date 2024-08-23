@@ -218,9 +218,9 @@
 
         //Camera
         if (index % 2 === 0) {
-                camera.position.set(-3, 5, 5);
+                camera.position.set(-3, 4, 5);
         } else {
-                camera.position.set(3, 5, 5);
+                camera.position.set(3, 4, 5);
         }
         camera.lookAt(new THREE.Vector3(0, 2, 0));
 
@@ -249,8 +249,8 @@
             //Lights
             const ambientLight = new THREE.AmbientLight(0x404040, 2);
             scene.add(ambientLight);
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-            directionalLight.position.set(0, 0, -1).normalize();
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+            directionalLight.position.set(0, 0, 0).normalize();
             camera.add(directionalLight);
 
             function animate() {
