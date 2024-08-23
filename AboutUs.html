@@ -183,6 +183,7 @@
 <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/DDSLoader.js"></script>
 <script>
+    //Textures 
     const modelContainers = [
         { id: 'model-dragoneron', texture: 'textures/dragoneron.png' },
         { id: 'model-moldawnik', texture: 'textures/moldawnik.png' },
@@ -191,13 +192,15 @@
         { id: 'model-itsme', texture: 'textures/itsme.png' }
     ];
 
-    modelContainers.forEach(container => {
+    //develiors
+    modelContainers.forEach((container, index) => {
         const element = document.getElementById(container.id);
         if (!element) {
             console.error(`Element with id ${container.id} not found`);
             return;
         }
-        
+
+        //Container
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(50, element.clientWidth / element.clientHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -206,21 +209,22 @@
         element.style.height = '700px';
         element.appendChild(renderer.domElement);
 
+        //OrbitControls
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableZoom = false;
         controls.enablePan = false;
         controls.enableDamping = true;
         controls.update();
 
-        teamMembers.forEach((member, index) => {
-            if (index % 2 === 0) {
+        //Camera
+        if (index % 2 === 0) {
                 camera.position.set(5, 6, 5);
-            } else {
+        } else {
                 camera.position.set(-5, 6, 5);
-            }
-        });
+        }
         camera.lookAt(new THREE.Vector3(0, 2, 0));
 
+        //Model
         const loader = new THREE.GLTFLoader();
         loader.load('3d/scene.gltf', function(gltf) {
             const model = gltf.scene;
@@ -228,6 +232,7 @@
             model.scale.set(2, 2, 2);
             scene.add(model);
 
+            //Model Texture
             const textureLoader = new THREE.TextureLoader();
             textureLoader.load(container.texture, (texture) => {
                 texture.minFilter = THREE.NearestFilter;
@@ -241,9 +246,9 @@
                 });
             });
 
+            //Lights
             const ambientLight = new THREE.AmbientLight(0x404040, 1);
             scene.add(ambientLight);
-
             const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
             directionalLight.position.set(1, 1, 1).normalize();
             scene.add(directionalLight);
@@ -256,6 +261,7 @@
             animate();
         });
 
+        // Window Resize
         window.addEventListener('resize', () => {
             const width = element.clientWidth;
             const height = element.clientHeight;
@@ -263,9 +269,9 @@
             camera.aspect = width / height;
             camera.updateProjectionMatrix();
         });
-        
-        window.addEventListener('load', () => {
-        modelContainers.forEach(container => {
+
+        // Window Load Handler
+        window.addEventListener('load', () => { modelContainers.forEach(container => {
             const element = document.getElementById(container.id);
             const width = element.clientWidth;
             const height = element.clientHeight;
