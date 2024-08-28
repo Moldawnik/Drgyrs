@@ -241,7 +241,7 @@
 
         //Container
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(50, element.clientWidth / element.clientHeight, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(element.clientWidth, element.clientHeight);
         element.style.width = '400px';
@@ -273,6 +273,11 @@
 
             //Model Texture
             const textureLoader = new THREE.TextureLoader();
+            material.transparent = true;
+            material.depthWrite = false;
+            material.polygonOffset = true;
+            material.polygonOffsetFactor = 1;
+            material.polygonOffsetUnits = 1;
             textureLoader.load(container.texture, (texture) => {
                 texture.minFilter = THREE.NearestFilter;
                 texture.magFilter = THREE.NearestFilter;
